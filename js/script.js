@@ -10,6 +10,7 @@ let primeiraCarta,
     numCartas = 0,
     contaJogadas,
     contaAcertos,
+    idInterval,
     t,
     sec = 0;
 
@@ -55,18 +56,20 @@ function distribueCartas() {
 
 function parrot(p) {
     contaJogadas++
-    if (jogadaFinalizada) {
-        desviraCarta(p);
-        if (parrots.classList.contains(existeClicada)) {
+
+    if (Boolean(jogadaFinalizada)) {
+        if (parrots.classList.contains(existeClicada) && p.innerHTML == `<img src="./img/front.png" alt="Parrot" />`) {
+            desviraCarta(p);
             jogadaFinalizada = false;
             segundaCarta = p;
             comparaCartas(primeiraCarta, segundaCarta);
         } else {
+            desviraCarta(p);
             primeiraCarta = p;
             parrots.classList.add(existeClicada);
         }
     } else { 
-        alert("Aguarde 2 segundos para se finalizar a jogada anterior e liberar as outras cartas!");
+        alert("Você clicou numa carta já desvirada ou não esperou o tempo para finalizar a jogada anterior!");
         contaJogadas-- 
     }
 }
@@ -90,6 +93,7 @@ function comparaCartas(C1, C2) {
             carta02.classList.remove('desvira-carta');
             carta01.classList.add('vira-carta');
             carta02.classList.add('vira-carta');
+            primeiraCarta = undefined;
             setTimeout(() => {
                 carta01.innerHTML = "";
                 carta02.innerHTML = "";
@@ -105,9 +109,12 @@ function comparaCartas(C1, C2) {
 
             C1.classList.remove('desvira-carta');
             C2.classList.remove('desvira-carta');
+            C1.classList.remove('desvirada');
+            C2.classList.remove('desvirada');
             contaAcertos = contaAcertos + 2;
             jogadaFinalizada = true;
             if (contaAcertos == distribuicao.length){
+                clearInterval(idInterval);
                 alert(`Parabêns!! Você concluiu esse jogo em ${sec} segundos com ${contaJogadas/2} jogadas.`)
                 let resp = prompt("Pretende continuar jogando? Responda sim ou não.")
                 while(resp != "sim " || resp != "não"){
@@ -125,7 +132,7 @@ function comparaCartas(C1, C2) {
     }, 2000)
 }
 
-setInterval(function(){ timer() }, 1000);
+idInterval = setInterval(function(){ timer() }, 1000);
 
 function timer() {
     var d = new Date();
