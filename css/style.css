@@ -21,14 +21,12 @@
 }
 
 #time{
-    color: black;
     font-size: 18px;
     font-weight: 600;  
 }
 
 .principal{
     width: 1110px;
-    height: 629px;
     padding: 40px 80px;
     background-color: #EEF9BF;
 }
@@ -62,12 +60,12 @@
     display: none;
 }
 @keyframes desvira_carta {
-    100% {transform: rotateY(180deg);}
+    50% {transform: rotateY(90deg);}
   }
 
   @keyframes vira_carta {
-    0% {transform: rotateY(-180deg);}
-    100% {transform: rotateY(0deg);}
+    0% {transform: rotateY(0deg);}
+    50% {transform: rotateY(-90deg);}
   }
 
 img{

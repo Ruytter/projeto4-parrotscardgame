@@ -30,7 +30,7 @@ function iniciaJogo(){
     distribueCartas();
 }
 function embaralhaCartas(numCartas) {
-    for (i = 1; i <= numCartas; i++) {
+    for (i = 0; i < numCartas; i++) {
         for (j = 0; j < 2; j++) {
             distribuicao.push(figuras[i]);
         }
@@ -51,22 +51,23 @@ function distribueCartas() {
         </div>
       `;
     }
-
+    contaTempo();
 }
 
 function parrot(p) {
     contaJogadas++
 
-    if (Boolean(jogadaFinalizada)) {
-        if (parrots.classList.contains(existeClicada) && p.innerHTML == `<img src="./img/front.png" alt="Parrot" />`) {
-            desviraCarta(p);
+    if (jogadaFinalizada && !p.classList.contains(existeClicada)) {
+        desviraCarta(p);
+        if (parrots.classList.contains(existeClicada)) {
             jogadaFinalizada = false;
             segundaCarta = p;
+            segundaCarta.classList.add(existeClicada);
             comparaCartas(primeiraCarta, segundaCarta);
         } else {
-            desviraCarta(p);
             primeiraCarta = p;
             parrots.classList.add(existeClicada);
+            primeiraCarta.classList.add(existeClicada);
         }
     } else { 
         alert("Você clicou numa carta já desvirada ou não esperou o tempo para finalizar a jogada anterior!");
@@ -91,9 +92,10 @@ function comparaCartas(C1, C2) {
                 carta02 = document.querySelector(`#${cartas[1].id}`);
             carta01.classList.remove('desvira-carta');
             carta02.classList.remove('desvira-carta');
+            carta01.classList.remove(existeClicada);
+            carta02.classList.remove(existeClicada);
             carta01.classList.add('vira-carta');
             carta02.classList.add('vira-carta');
-            primeiraCarta = undefined;
             setTimeout(() => {
                 carta01.innerHTML = "";
                 carta02.innerHTML = "";
@@ -116,12 +118,14 @@ function comparaCartas(C1, C2) {
             if (contaAcertos == distribuicao.length){
                 clearInterval(idInterval);
                 alert(`Parabêns!! Você concluiu esse jogo em ${sec} segundos com ${contaJogadas/2} jogadas.`)
-                let resp = prompt("Pretende continuar jogando? Responda sim ou não.")
-                while(resp != "sim " || resp != "não"){
+                let resp = "";
+                while(resp !== "sim " || resp !== "não"){
+                    resp = prompt("Pretende continuar jogando? Responda sim ou não.")
                     if (resp == "sim") {
                         iniciaJogo()
                         break
-                    }else{
+                    }
+                    if (resp == "não") {
                         alert("Haaa, que pena! Nós gostamos de brincar com você. Volte sempre para se divertir com os parrots divertidos!!")
                         break
                     }
@@ -132,7 +136,11 @@ function comparaCartas(C1, C2) {
     }, 2000)
 }
 
-idInterval = setInterval(function(){ timer() }, 1000);
+function contaTempo(){
+    sec = 0;
+    idInterval = setInterval(function(){ timer() }, 1000);
+}
+
 
 function timer() {
     var d = new Date();
