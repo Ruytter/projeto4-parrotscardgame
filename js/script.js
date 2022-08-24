@@ -1,6 +1,6 @@
 
 const distribuicao = [],
-figuras = [1, 2, 3, 4, 5, 6, 7]
+    figuras = [1, 2, 3, 4, 5, 6, 7],
     parrots = document.querySelector(".parrots"),
     time = document.querySelector("#time"),
     existeClicada = "clicada";
